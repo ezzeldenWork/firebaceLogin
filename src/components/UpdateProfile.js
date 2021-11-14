@@ -3,37 +3,34 @@ import {Card, Form, Button, Alert} from "react-bootstrap";
 import {Link, useHistory} from "react-router-dom";
 import {useAuth} from "../context/AuthContect";
 
-export default function SingUp() {
+export default function UpdateProfile() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const {singup} = useAuth();
+  const {currentUser} = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   async function handleSubmit(e) {
-    e.preventDefault();
-
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Passwords do not match");
-    }
-
-    try {
-      setError("");
-      setLoading(true);
-      await singup(emailRef.current.value, passwordRef.current.value);
-      history.push("/");
-    } catch {
-      setError("Failed to create an account");
-    }
-
-    setLoading(false);
+    //   e.preventDefault();
+    //   if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+    //     return setError("Passwords do not match");
+    //   }
+    //   try {
+    //     setError("");
+    //     setLoading(true);
+    //     await singup(emailRef.current.value, passwordRef.current.value);
+    //     history.push("/");
+    //   } catch {
+    //     setError("Failed to create an account");
+    //   }
+    //   setLoading(false);
   }
   return (
     <>
       <Card style={{backgroundColor: "#ddd", color: "#333"}}>
         <Card.Body>
-          <h2 className="text-center mb-4">Sign Up</h2>
+          <h2 className="text-center mb-4">Update Profile</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
@@ -43,6 +40,7 @@ export default function SingUp() {
                 type="email"
                 ref={emailRef}
                 required
+                defaultValue={currentUser.email}
               />
             </Form.Group>
             <Form.Group id="password">
@@ -69,7 +67,10 @@ export default function SingUp() {
           </Form>
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2 p-2" style={{backgroundColor: "#ddd", color: "#333", borderRadius: "5px"}}>
+      <div
+        className="w-100 text-center mt-2 p-2"
+        style={{backgroundColor: "#ddd", color: "#333", borderRadius: "5px"}}
+      >
         Already have an account? <Link to="/login">Log In</Link>
       </div>
     </>

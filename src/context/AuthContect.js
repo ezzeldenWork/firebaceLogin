@@ -1,4 +1,5 @@
 import React, {useContext, useState, useEffect} from "react";
+import {useHistory} from "react-router";
 
 import {auth} from "../firebase";
 
@@ -16,6 +17,18 @@ export const AuthProvider = (props) => {
     auth.createUserWithEmailAndPassword(email, password);
   }
 
+  function login(email, password) {
+    return auth.signInWithEmailAndPassword(email, password);
+  }
+
+  function logout() {
+    return auth.signOut();
+  }
+
+  function resetPassword(email) {
+    return auth.sendPasswordResetEmail(email);
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -28,6 +41,9 @@ export const AuthProvider = (props) => {
   const value = {
     currentUser,
     singup,
+    login,
+    logout,
+    resetPassword,
   };
 
   return (
